@@ -19,17 +19,9 @@ def split(source, destination):
         - destination [str]: destination data directory, contains 3 sub folders: train / val / test
     """
     # TODO: Implement function
-    dataset = os.listdir(source + 'training_and_validation')
+    dataset = os.listdir(source + 'processed')
     np.random.shuffle(dataset)
-    train_set, test_set, val_set  = np.split(dataset, [int(.8*len(dataset)), int(.9*len(dataset))])
-    
-    for i, data in enumerate(dataset):
-        if i < int(0.75 * len(dataset)):
-            shutil.move(destination+'/training_and_validation/'+ data, destination + '/train')
-
-
-    dataset = glob.glob(source+'/*.tfrecord')
-    
+  
     #80% 10% 10%
     train_set, test_set, val_set  = np.split(dataset, [int(.8*len(dataset)), int(.9*len(dataset))])
     # assigining 80 and 20 ration to train and val filenames
@@ -38,11 +30,11 @@ def split(source, destination):
     val_dst = os.path.join(destination, 'val/')
 
     for trainfile in train_set:   
-        shutil.move(source+f'/{os.path.basename(trainfile)}', train_dst+f'{os.path.basename(trainfile)}')
+        shutil.move(source+f'processed/{os.path.basename(trainfile)}', train_dst+f'{os.path.basename(trainfile)}')
     for testfile in test_set:   
-        shutil.move(source+f'/{os.path.basename(testfile)}', test_dst+f'{os.path.basename(testfile)}')
+        shutil.move(source+f'processed/{os.path.basename(testfile)}', test_dst+f'{os.path.basename(testfile)}')
     for valfile in val_set:
-        shutil.move(source+f'/{os.path.basename(valfile)}', val_dst+f'{os.path.basename(valfile)}')
+        shutil.move(source+f'processed/{os.path.basename(valfile)}', val_dst+f'{os.path.basename(valfile)}')
     
 
 if __name__ == "__main__":
