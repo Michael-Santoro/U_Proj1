@@ -153,7 +153,7 @@ if __name__ == "__main__":
     size = args.size
 
     # open the filenames file
-    with open('filenames_new.txt', 'r') as f:
+    with open('filenames_new.txt', 'rb') as f:
         filenames = f.read().splitlines()
     logger.info(f'Download {len(filenames[:size])} files. Be patient, this will take a long time.')
 

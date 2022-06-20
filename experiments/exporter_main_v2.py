@@ -146,7 +146,7 @@ flags.mark_flag_as_required('output_directory')
 
 def main(_):
   pipeline_config = pipeline_pb2.TrainEvalPipelineConfig()
-  with tf.io.gfile.GFile(FLAGS.pipeline_config_path, 'r') as f:
+  with tf.io.gfile.GFile(FLAGS.pipeline_config_path, 'rb') as f:
     text_format.Merge(f.read(), pipeline_config)
   text_format.Merge(FLAGS.config_override, pipeline_config)
   exporter_lib_v2.export_inference_graph(

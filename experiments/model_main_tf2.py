@@ -30,6 +30,7 @@ python model_main_tf2.py -- \
 from absl import flags
 import tensorflow.compat.v2 as tf
 from object_detection import model_lib_v2
+from datetime import datetime
 
 flags.DEFINE_string('pipeline_config_path', None, 'Path to pipeline config '
                     'file.')
@@ -110,4 +111,9 @@ def main(unused_argv):
           record_summaries=FLAGS.record_summaries)
 
 if __name__ == '__main__':
+
+  gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
+  session = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=gpu_options))
+  logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+  tboard_callback = tf.keras.callbacks.TensorBoard(log_dir = logs,histogram_freq = 1,profile_batch = '500,520')
   tf.compat.v1.app.run()
