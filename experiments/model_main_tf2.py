@@ -30,7 +30,6 @@ python model_main_tf2.py -- \
 from absl import flags
 import tensorflow.compat.v2 as tf
 from object_detection import model_lib_v2
-from datetime import datetime
 
 flags.DEFINE_string('pipeline_config_path', None, 'Path to pipeline config '
                     'file.')
@@ -51,7 +50,7 @@ flags.DEFINE_string(
     '`checkpoint_dir` is provided, this binary operates in eval-only mode, '
     'writing resulting metrics to `model_dir`.')
 
-flags.DEFINE_integer('eval_timeout', 60, 'Number of seconds to wait for an'
+flags.DEFINE_integer('eval_timeout', 3600, 'Number of seconds to wait for an'
                      'evaluation checkpoint before exiting.')
 
 flags.DEFINE_bool('use_tpu', False, 'Whether the job is executing on a TPU.')
@@ -64,7 +63,7 @@ flags.DEFINE_integer(
     'MultiWorkerMirroredStrategy. When num_workers = 1 it uses '
     'MirroredStrategy.')
 flags.DEFINE_integer(
-    'checkpoint_every_n', 2000, 'Integer defining how often we checkpoint.')
+    'checkpoint_every_n', 500, 'Integer defining how often we checkpoint.')
 flags.DEFINE_boolean('record_summaries', True,
                      ('Whether or not to record summaries during'
                       ' training.'))
@@ -111,9 +110,4 @@ def main(unused_argv):
           record_summaries=FLAGS.record_summaries)
 
 if __name__ == '__main__':
-
-  gpu_options = tf.compat.v1.GPUOptions(per_process_gpu_memory_fraction=0.4)
-  session = tf.compat.v1.Session(config=tf.compat.v1.ConfigProto(gpu_options=gpu_options))
-  logs = "logs/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-  tboard_callback = tf.keras.callbacks.TensorBoard(log_dir = logs,histogram_freq = 1,profile_batch = '500,520')
   tf.compat.v1.app.run()
